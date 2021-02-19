@@ -18,6 +18,7 @@ mySort.prototype.swap = function(a,b){
 
 //冒泡排序
 //两两相比　逐级冒泡
+//两两相比每次选择一个最大的元素放在最后,最后最大的一定在后面
 mySort.prototype.bubbleSort = function(){
     let arr = this.arr;
     if(!Array.isArray(arr) || arr.length == 0) {
@@ -46,6 +47,7 @@ mySort.prototype.chooseSort = function(){
               this.swap(i,j);
             }
         }
+        console.log(arr)
     }
     return arr;
 }
@@ -96,7 +98,7 @@ mySort.prototype.quickFast = function(){
 
 let osort = new mySort(arr);
 // console.log(osort.bubbleSort())
-// console.log(osort.chooseSort())
+console.log(osort.chooseSort())
 // console.log(osort.insertSort())
 // console.log(osort.quickFast())
 

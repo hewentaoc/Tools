@@ -232,6 +232,8 @@ Utils.prototype.myProxy = function( initObj= {},proxyObj = Utils.prototype.proxy
 
 
 
+
+
 let obj = {
     love:{
         mylove:'sing'
