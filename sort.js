@@ -98,7 +98,7 @@ mySort.prototype.quickFast = function(){
 
 let osort = new mySort(arr);
 // console.log(osort.bubbleSort())
-console.log(osort.chooseSort())
+// console.log(osort.chooseSort())
 // console.log(osort.insertSort())
 // console.log(osort.quickFast())
 

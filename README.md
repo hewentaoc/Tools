@@ -25,5 +25,13 @@
 - 分而治之
 - 将数组拆分为多块，再进行合并
 
+## 6. 反转链表
+
+- 核心: root.next.next = root
+- 下一个节点指向上一个节点
+
+
+
+console.dir(result,{depth:6})
 
 

@@ -1,5 +1,5 @@
 let arr = [5,7,9,10,1,3];
-let i = 0;
+let x = 0;
 
 
 
@@ -20,7 +20,6 @@ function bubbleSort(arr){
                 arr[j+1] = temp;
             }
         }
-        console.log(arr)
     }
     return arr;
 }
@@ -123,10 +122,11 @@ function merge(left,right){
 }
 
 
-let sortArr = mergeSort(arr);
+// let sortArr = mergeSort(arr);
+// console.log(sortArr)
 
 // let sortArr = quickSort(arr); 
-console.log(sortArr)
+// console.log(sortArr)
 
 // let sortArr = insertSort(arr);
 // console.log(sortArr)
@@ -136,3 +136,4 @@ console.log(sortArr)
 
 // let sortArr = bubbleSort(arr);
 // console.log(sortArr)
+
