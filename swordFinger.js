@@ -409,5 +409,415 @@ function arrangeHelper(arr,str){
 //  console.log(result)
 
 
+//8.
+//输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+//输出：[1,2,3,6,9,8,7,4,5]
+
+
+
+
+
+let resArr = [];
+function getArrayByMatrix(arr){
+    if(!Array.isArray(arr)){
+        return arr;
+    }
+    for(let i = 0 ; i < arr.length ; i++){
+        if(Array.isArray(arr[i])){
+            getArrayByMatrix(arr[i])
+        }else{
+            resArr.push(arr[i]);
+        }
+    }
+}
+
+function getArrayByMatrix2(arr){
+    if(!Array.isArray(arr) || arr.length == 0){
+        return [];
+    }
+    let result = [];
+    for(let i = 0 ; i < arr.length ; i++){
+        if(Array.isArray(arr[i])){
+            result = result.concat(getArrayByMatrix2(arr[i]))
+        }else{
+            result.push(arr[i]);
+        }
+    }
+    return result;
+}
+
+
+function getArrayByMatrix3(arr){
+    if(!Array.isArray(arr) || arr.length == 0){
+        return [];
+    }
+    return arr.flat(Infinity);
+}
+
+
+// let aops = getArrayByMatrix3([[1,2,3],[4,5,6],[7,8,9]]) 
+
+
+// 9. 
+// 输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是递增排序的。
+
+// 示例1：
+
+// 输入：1->2->4, 1->3->4
+// 输出：1->1->2->3->4->4
+
+
+let b1 = new NodeList(1)
+let b2 = new NodeList(2)
+let b4 = new NodeList(4)
+let c1 = new NodeList(1);
+let c3 = new NodeList(3);
+let c4 = new NodeList(4);
+
+b1.next = b2;
+b2.next = b4;
+
+c1.next = c3;
+// c3.next = c4;
+
+function mergeNode(head1,head2){
+    let arr = [];
+    while(head1){
+        arr.push(head1.val);
+        head1 = head1.next;
+    }
+    while(head2){
+        arr.push(head2.val);
+        head2 = head2.next;
+    }
+    arr.sort((a,b)=>{
+        return a -b;
+    })
+    arr = arr.map((item,index)=>{
+        return new NodeList(item)
+    })
+    let root = arr[0];
+    for(let i = 0 ; i < arr.length ; i++){
+        let node = arr[i];
+        if(i == arr.length -1){
+            node.next = null;
+        }else{
+            node.next = arr[i+1];
+        }
+    }
+    console.log(root)
+}
+/**
+ * 
+ 1 , 2
+ 3 , 4
+
+
+ 1.next
+
+ 2
+ 3 , 4 
+
+ 1
+
+ 1 , 2
+
+ 1
+ 1,2
+
+
+ 3
+
+ 1,2
+
+
+ */
+//递归
+function mergeNode2(l1,l2){
+   if(l1 == null && l2){
+     return l2
+   }
+   if(l2 == null && l1){
+     return l1
+   }
+   if(l1 == null || l2 == null){
+      return null
+   }
+   if(l1.val < l2.val){
+      l1.next = mergeNode2(l1.next,l2);
+      return l1;
+   }else{
+      l2.next = mergeNode2(l1,l2.next);
+      return l2
+   }
+}
+
+// 1.next = 2.next = 
+// let nodes1 = mergeNode2(b4,c1);
+// console.log(111,nodes1)
+function mergeNode3(l1,l2){
+    let head = new NodeList();
+    let node = head;
+    // 12
+    // 1
+    while(l1 && l2){
+        if(l1.val < l2.val){
+            node.next = l1;
+            l1 = l1.next;
+        }else{
+            node.next = l2;
+            l2 = l2.next;
+        }
+        node = node.next;
+    }
+    if(l1){
+        node.next = l1;
+    }
+    if(l2){
+        node.next = l2;
+    }
+    return head.next;
+}
+// let nodes = mergeNode2(b4,c1);
+
+
+
+
+
+
+// 10 一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 n 级的台阶总共有多少种跳法。
+
+
+
+
+
+/**
+ 1  1
+
+ 2  2  11 2
+
+ 3  3  111 12 21
+
+ 4  4  1111 112 121 211 22 
+
+
+ */
+
+
+
+
+
+ function fibonaci(n){
+    if(n == 0) {
+        return 0;
+    }
+    if(n == 1 ) {
+        return 1;
+    } 
+    if(n == 2) {
+        return 2
+    }
+    return fibonaci(n-1) + fibonaci(n-2);
+ }
+//  let fResult = fibonaci(4);
+//  console.log(fResult)
+
+function fibonaci2(n){
+    let n1 = 1;
+    let n2 = 1;
+    let sum;
+    if(n <= 0) {
+        return 0;
+    }
+    if(n == 1){
+        return 1;
+    }
+    for(let i = 2; i <= n ;i++){
+        sum = n1 + n2;
+        n1 = n2;
+        n2 = sum;
+    }
+    return sum;
+}
+
+// let fResult2 = fibonaci2(4);
+// console.log(fResult2)
+function fn3(n) {
+    const dp = [1, 1]
+    for (let i = 2; i <= n; i++) {
+      dp[i] = (dp[i-1] + dp[i-2]) % 1000000007
+    }
+    return dp[n]
+}
+
+
+
+
+
+
+/**
+11. 
+ * [
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
+ */
+
+
+ 
+ let tenArr = [
+    [1,   4,  7, 11, 15],
+    [2,   5,  8, 12, 19],
+    [3,   6,  9, 16, 22],
+    [10, 13, 14, 17, 24],
+    [18, 21, 23, 26, 30]
+  ]
+
+
+
+
+ function findNumFromArr(tenArr,num){
+    console.log(tenArr,num)
+    for(let i = 0 ; i < tenArr.length ;i++){
+        for(let j = 0 ; j < tenArr[i].length ; j++){
+            if(num < tenArr[i][0] || num > tenArr[i][tenArr[i].length-1]){
+                break;
+            }
+            if(num == tenArr[i][j]){
+                return true;
+            }
+        }
+    }
+    return false;
+ }
+ var findNumberIn2DArray = function(matrix, target) {
+    return matrix.flat(Infinity).includes(target)
+};
+
+
+// let tenNum = findNumFromArr(tenArr,20);
+// console.log(tenNum)
+
+
+
+/**
+ * 12. 
+ * 在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。
+   输入: [7,5,6,4]
+   输出: 5
+*/
+
+
+
+
+// [7,5,6,4]
+// 输出: 5
+
+
+
+
+
+
+
+
+
+var reversePairs = function(nums) {
+  let count = 0;
+
+  for(let i = 0 ; i < nums.length ;i++){
+    for(let j = i+1 ; j < nums.length ; j++){
+        if(nums[i] > nums[j]){
+            count++;
+        }else{
+            continue;
+        }
+    }
+  }
+  return count;
+};
+
+// let count11 = reversePairs([7,5,6,4])
+// console.log(count11)
+
+
+
+function mergeSort(arr){
+    if(arr.length < 2){
+        return arr
+    }
+    let mid = Math.floor(arr.length/2);
+    let left = arr.slice(0,mid);
+    let right = arr.slice(mid,arr.length);
+    return merge(mergeSort(left),mergeSort(right))
+}
+let sum = 0;
+function merge(left,right){
+    let res = [];
+    while(left.length && right.length){
+        if(left[0] > right[0]){
+            // for(let i = 0 ; i < right.length ;i++){
+            //     test.push([left[0],right[i]]) 
+            // }
+            res.push(left.shift());
+            sum += right.length;
+        }else{
+            res.push(right.shift());
+        }
+    }
+    if(left.length || right.length){
+        res = res.concat(left,right);
+    }
+    return res;
+}
+let count11 = mergeSort([7,5,6,4])
+console.log(count11,sum)
+
+
+
+
+/**13.
+ * 前序遍历 preorder = [3,9,20,15,7]
+中序遍历 inorder = [9,3,15,20,7]
+返回如下的二叉树：
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+ */
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
