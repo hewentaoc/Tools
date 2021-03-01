@@ -772,8 +772,8 @@ function merge(left,right){
     }
     return res;
 }
-let count11 = mergeSort([7,5,6,4])
-console.log(count11,sum)
+// let count11 = mergeSort([7,5,6,4])
+// console.log(count11,sum)
 
 
 
@@ -790,7 +790,6 @@ console.log(count11,sum)
    15   7
  */
 
- 
 
 
 
@@ -800,6 +799,160 @@ console.log(count11,sum)
 
 
 
+
+
+
+
+
+
+let preorder = [3,9,20,15,7]
+let inorder = [9,3,15,20,7]
+function NodeTree(val){
+    this.val = val;
+    this.left = null;
+    this.right = null;
+}
+
+var buildTree = function(preorder, inorder) {
+    if(preorder == null || inorder == null || preorder.length == 0 || inorder.length == 0 || preorder.length != inorder.length){
+        return null;
+    }
+    let root = new NodeTree(preorder[0]);
+    let index = inorder.indexOf(root.val);
+    let preorderLeft = preorder.slice(1,1+index);
+    let preorderRight = preorder.slice(1+index,preorder.length);
+    let inorderLeft = inorder.slice(0,index);
+    let inorderRight = inorder.slice(index + 1,inorder.length);
+    root.left = buildTree(preorderLeft,inorderLeft);
+    root.right = buildTree(preorderRight,inorderRight);
+    return root;
+};
+let root22 = buildTree(preorder,inorder);
+// console.log('111',root22)
+
+
+function backOrder(root,arr){
+    if(root == null){
+        return null;
+    }
+    console.log(root)
+    root.left && backOrder(root.left,arr);
+    root.right && backOrder(root.right,arr);
+    arr.push(root.val);
+    return arr;
+}
+let backorder = backOrder(root22,[])
+console.log(111,backorder)
+//  3
+// / \
+// 9  20
+//  /  \
+// 15   7
+
+//
+// [3]
+// [Node(20),Node(9)]
+// [3,20,9,7,15]
+function preorderTraversal1(root) {
+	if (!root) {
+		return;
+	}
+	var stack = [root];
+	while (stack.length > 0) {
+		//取第一个。
+		var item = stack.shift();
+		// console.log(item.val);
+        console.log(item)
+		if (item.right) {
+			stack.unshift(item.right);
+		}
+        // console.log(JSON.parse(JSON.stringify(stack)))
+		if (item.left) {
+			stack.unshift(item.left);
+		}
+	}
+}
+// preorderTraversal1(root22); //1 2 4 5 3 6 7 
+
+// function buildTree2(root){
+//     while(root){
+//         let node = root;
+//     }
+// }
+// let backorders = backOrder(root22)
+// console.log(backorders)
+
+
+// let inorder = [9,3,15,20,7]
+// let backorder = [9, 15, 7, 20, 3]
+
+
+//后序遍历之逆序
+
+
+// [3,20,9,7,15]
+//  3
+// / \
+// 9  20
+//  /  \
+// 15   7
+// 左右根
+// 根右左
+function LRD(root){
+    var arr=[],res=[];
+    arr.push(root);
+    while(arr.length!=0){
+        var p=arr.pop();
+        res.push(p.val);
+        console.log(p.val)
+        if(p.left!=null){
+            arr.push(p.left);
+        }
+        if(p.right!=null){
+            arr.push(p.right);
+        }
+    }
+    return res.reverse();
+}
+// LRD(root22)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function Node(value) {
+//     this.value = value;
+//     this.left = null;
+//     this.right = null;
+// }
+
+// function f1(qian, zhong) {
+//     console.log(444,qian, zhong)
+//     if (qian == null || zhong == null || qian.length == 0 || zhong.length == 0 || qian.length != zhong.length) return null;
+//     var root = new Node(qian[0]);
+//     var index = zhong.indexOf(root.value);//找到根节点在中序遍历中的位置
+//     var qianLeft = qian.slice(1, 1 + index);//前序遍历的左子树
+//     var qianRight = qian.slice(1 + index, qian.length);//前序遍历的右子树
+//     var zhongLeft = zhong.slice(0, index);//中序遍历的左子树
+//     var zhongRight = zhong.slice(index + 1, zhong.length);//中序遍历的右子树
+//     root.left = f1(qianLeft, zhongLeft);//根据左子树的前序和中序还原左子树并赋值给root.left
+//     root.right = f1(qianRight, zhongRight);//根绝右子树的前序和中序还原右子树并赋值给root.right
+//     return root;
+// }
+
+// var root = f1(qian, zhong);
+
+// console.log(root);
 
 
 
