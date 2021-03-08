@@ -85,19 +85,19 @@ const addTask = (time, order) => {
 
 
 
-function O() {
-    this.x = 1;
-    this.print = function () {
-        console.log(this.x)
-    }
-}
-var o = new O()
+// function O() {
+//     this.x = 1;
+//     this.print = function () {
+//         console.log(this.x)
+//     }
+// }
+// var o = new O()
  
-var print = o.print
-print()
+// var print = o.print
+// print()
  
-var n = {x: 2, print: print}
-n.print()
+// var n = {x: 2, print: print}
+// n.print()
 
 
 

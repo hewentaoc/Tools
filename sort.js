@@ -102,5 +102,28 @@ let osort = new mySort(arr);
 // console.log(osort.insertSort())
 // console.log(osort.quickFast())
 
+        // 二分法需要排好队
+        var arrs = [1, 3, 4, 5, 6, 7, 8, 10, 21];
 
+        function findIndex(arr, value) {
+            if (arr.length == 0) {
+                return undefined;
+            }
+            var low = 0;
+            var hight = arr.length - 1;
+            while (low <= hight) {
+                var mid = parseInt((low + hight) / 2);
+                console.log('xx',mid)
+                if (arr[mid] == value) {
+                    return mid;
+                } else if (arr[mid] > value) {
+                    hight--;
+                } else {
+                    low++;
+                }
+            }
+            return -1;
+        }
+        findIndex(arrs, 5)
+        // console.log(findIndex(arrs, 5))
 

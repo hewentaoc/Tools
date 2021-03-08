@@ -841,8 +841,8 @@ function backOrder(root,arr){
     arr.push(root.val);
     return arr;
 }
-let backorder = backOrder(root22,[])
-console.log(111,backorder)
+// let backorder = backOrder(root22,[])
+// console.log(111,backorder)
 //  3
 // / \
 // 9  20
@@ -898,23 +898,233 @@ function preorderTraversal1(root) {
 // 15   7
 // 左右根
 // 根右左
-function LRD(root){
-    var arr=[],res=[];
-    arr.push(root);
-    while(arr.length!=0){
-        var p=arr.pop();
-        res.push(p.val);
-        console.log(p.val)
-        if(p.left!=null){
-            arr.push(p.left);
+// function LRD(root){
+//     var arr=[],res=[];
+//     arr.push(root);
+//     while(arr.length!=0){
+//         var p=arr.pop();
+//         res.push(p.val);
+//         console.log(p.val)
+//         if(p.left!=null){
+//             arr.push(p.left);
+//         }
+//         if(p.right!=null){
+//             arr.push(p.right);
+//         }
+//     }
+//     return res.reverse();
+// }
+// LRD(root22)
+
+
+
+
+
+
+
+
+/**
+ * 14. 二叉树的遍历方法汇总
+  a
+ / \
+b  c
+   / \
+  d   e
+  [a,b,c,d,e]
+ */
+
+
+function NodeTree2(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+}
+
+let a5 = new NodeTree2('a');
+let b5= new NodeTree2('b');
+let c5 = new NodeTree2('c');
+let d5 = new NodeTree2('d');
+let e5 = new NodeTree2('e');
+let f5 = new NodeTree2('f');
+a5.left = b5;
+a5.right = c5;
+c5.left = d5;
+c5.right = e5;
+
+
+
+let prevTreeArr = [];
+//前序 - [a,b,c,d,e]
+function prevTreeShow(root){
+    if(root == null){
+        return null;
+    }
+    prevTreeArr.push(root.value);
+    root.left && prevTreeShow(root.left);
+    root.right && prevTreeShow(root.right)
+}
+// prevTreeShow(a5)
+// console.log('前序',prevTreeArr)
+
+function prevTreeShow2(root){
+    if(!root){
+        return null;
+    }
+
+    let save = [root];
+    let node = root;
+    let res = [];
+    while(node && save.length > 0){
+        let cur = save.pop();
+        res.push(cur.value);
+        if(cur.right){
+           save.push(cur.right);
         }
-        if(p.right!=null){
-            arr.push(p.right);
+        if(cur.left){
+            save.push(cur.left);
         }
     }
-    return res.reverse();
+    return res;
 }
-// LRD(root22)
+// let returnPrevTreeShow2 = prevTreeShow2(a5);
+// console.log(returnPrevTreeShow2)
+
+
+
+
+/**
+ * 14
+  a
+ / \
+b   c
+   / \
+  d   e
+  [b,a,d,c,e]
+ */
+let midTreeArr = [];
+//中序
+function midTreeShow(root){
+    if(root == null){
+        return null;
+    }
+    root.left && midTreeShow(root.left);
+    midTreeArr.push(root.value);
+    root.right && midTreeShow(root.right)
+}
+// midTreeShow(a5)
+// console.log('中序',midTreeArr)
+//  a
+// / \
+// b   c
+//   / \
+//  d   e
+function midTreeShow2(root){
+    if(!root){
+        return
+    }
+    let save = [];
+    let res = [];
+    let node = root;
+    while(node || save.length > 0){
+        if(node){
+            console.log(11,node)
+            node = node.left;
+        }else{
+          let cur = save.pop();
+          res.push(cur.value);
+          node = cur.right;
+        }
+    }
+    console.log(res);
+}
+// midTreeShow2(a5)
+// const inorder2 = (root) => {
+//     if (!root) return;
+//     const stack = [];
+//     let p = root;
+//     while (stack.length || p) {
+//       // 类似于遍历链表，把当前根节点的所有左节点 push 到 stack 中
+//       while (p) {
+//         stack.push(p);
+//         console.log(111,p)
+//         p = p.left;
+//       }
+//       // 访问最底层的左节点
+//       const n = stack.pop();
+//       console.log(n.value);
+//       // 然后将指针指向当前根节点的右节点，以该右节点作为根节点继续下轮的遍历
+//       p = n.right;
+//     }
+//   };
+//   inorder2(a5);
+  
+//后序 [b,d,e,c,a]
+let backTreeArr = [];
+function backTreeShow(root){
+    if(root == null){
+        return;
+    }
+    root.left && backTreeShow(root.left);
+    root.right && backTreeShow(root.right);
+    backTreeArr.push(root.value)
+}
+// backTreeShow(a5)
+// console.log('后序',backTreeArr)
+
+//左右根
+//根右左
+function backTreeShow2(root){
+    if(!root){
+        return null;
+    }
+    let save = [root];
+    let res = [];
+    while(save.length > 0){
+        let cur = save.pop();
+        res.unshift(cur.value);
+        if(cur.left){
+            save.push(cur.left)
+        }
+        if(cur.right){
+            save.push(cur.right);
+        }
+    }
+    console.log(res);
+}
+// backTreeShow2(a5)
+
+
+
+/**
+ * 15. 还原二叉树
+ * 
+ * 前序遍历＋中序遍历
+ * 后序遍历＋中序遍历
+  a
+ / \
+b  c
+   / \
+  d   e
+  [a,b,c,d,e]
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
