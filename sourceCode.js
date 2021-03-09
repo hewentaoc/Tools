@@ -212,9 +212,6 @@ function getData(generator){
 //  console.log(opt == op)
 
  function MyPromise(func1){
-    if(typeof func1 != 'function'){
-        throw new Error('func muse be a function!')
-    }
     this.resolveArr = [];
     this.rejectArr = [];
     this.status = 'pedding';
@@ -231,29 +228,67 @@ function getData(generator){
             elem();
         })
     }
-    function reject(){
+    function reject(params){
         if(self.status != 'pedding'){
             return;
         }
-        self.reject = 'reject';
+        self.rejectParams = params;
+        self.status = 'reject';
+        self.rejectArr.forEach((elem)=>{
+            elem();
+        })
     }
-    func1(reslove,reject);
+    try {
+      func1(reslove,reject);
+    } catch (error) {
+      console.log('iii')
+      reject(error)
+    }
+ }
+ MyPromise.prototype.handleNextValue = function(nextPromise,returnParams,reslove,reject){
+    if(returnParams instanceof MyPromise){
+       returnParams.then((params)=>{
+          reslove(params)
+        },(err)=>{
+          reject(err)
+        })
+    }else{
+        reslove(returnParams)
+    }
  }
  MyPromise.prototype.then = function(succ,fail){
-    if(typeof succ != 'function'){
-        return;
+    if(!succ){
+        succ = function(data){
+            return data;
+        }
+    }
+    if(!fail){
+        fail = function(error){
+            throw new Error(error);
+        } 
     }
     let self = this;
-    var nextPromise = new Promise((reslove,reject)=>{
+    var nextPromise = new MyPromise((reslove,reject)=>{
         if(this.status == 'reslove'){
-           let returnParams = succ(this.params);
-           //this.status = 'pedding';
-           reslove(returnParams)
+           setTimeout(()=>{
+              try {
+                let returnParams = succ(self.resloveParams);
+                self.handleNextValue(nextPromise,returnParams,reslove,reject)
+              } catch (error) {
+                console.log(error)
+                reject(error)  
+              }
+           },0)
         }
-        if(this.status == 'fail'){
-            let returnParams = fail(this.params);
-            // this.status = 'pedding'; 
-            reject(returnParams)
+        if(this.status == 'reject'){
+            setTimeout(()=>{
+                try {
+                   let returnParams = fail(self.rejectParams);
+                   self.handleNextValue(nextPromise,returnParams,reslove,reject)
+                } catch (error) {
+                   reject(error)
+                }
+            },0)
         }
         if(this.status == 'pedding'){
             if(succ){
@@ -261,33 +296,57 @@ function getData(generator){
                     setTimeout(()=>{
                         try {
                          let nextValue = succ(self.resloveParams);
-                         reslove(nextValue)
+                         self.handleNextValue(nextPromise,nextValue,reslove,reject)
                         } catch (error) {
-                         reject(error)    
+                           console.log(909)
+                           reject(error)    
                         }
-                    })
+                    },0)
                 })
             }
             if(fail){
-                self.resolveArr.push(()=>{
-                    succ(self.rejectParams);
+                self.rejectArr.push(()=>{
+                    setTimeout(()=>{
+                       try {
+                         let nextValue = fail(self.rejectParams);
+                         self.handleNextValue(nextPromise,nextValue,reslove,reject)
+                       } catch (error) {
+                         console.log(788)
+                         reject(error)
+                       }
+                    },0)
                 })
             }
         }
     })
     return nextPromise;
- }  
+ }
  
- setTimeout(()=>{
-    console.log(999,'qqq')  
- })
+ MyPromise.prototype.catch = function(reject){
+    return this.then(null,reject)
+ }
+ 
+//  setTimeout(()=>{
+//     console.log(999,'qqq')  
+//  })
  let oq = new MyPromise((reslove)=>{
-    console.log(111,'ooo')
     reslove(333)
  });
  oq.then((data)=>{
     console.log(222,'sss',data)
-    return 'sss'
+    return 'mmm'
+ },(error)=>{
+    console.log('error',error)
  }).then((res)=>{
     console.log(888,res)
+    return new MyPromise((reslove)=>{
+        reslove('my promise!')
+    })
+ }).then().then((res)=>{
+    console.log('yyyy',res)
+ }).catch((err)=>{
+    console.log(666,err)
+ }).then(()=>{
+    console.log('777')
  })
+

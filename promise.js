@@ -10,7 +10,7 @@ function Mypromise(func){
         if(self.status == 'pedding'){//成功的函数只能执行一次
             self.status = 'success';   
             self.resovleVal = data;  
-            console.log(self.resolveArr)    
+            // console.log(self.resolveArr)    
             self.resolveArr.forEach(function(ele){
                 ele();
             })
@@ -127,6 +127,7 @@ Mypromise.prototype.then = function(onfulling,onreject){
                             var nextRejVal = onreject(self.rejectVal);
                             dealReturnVal(nextPromise,nextRejVal,res,rej);
                         } catch (error) {
+                            console.log('demo9')
                             rej(error);
                         }
                       
@@ -143,7 +144,7 @@ Mypromise.prototype.then = function(onfulling,onreject){
 // 模拟catch捕捉错误
 // 用then中的失败函数来捕捉错误
 Mypromise.prototype.catch = function(onreject){
-    this.then(null,onreject);
+   return this.then(null,onreject);
 }
 
 // 无论是成功还是失败最后总会执行的函数
@@ -195,14 +196,42 @@ Mypromise.prototype.finally = function(func){
         }
     }
 
-    // let oq = new Mypromise((reslove)=>{
+    // let oqs = new Mypromise((reslove)=>{
     //     setTimeout(()=>{
-    //        reslove('pppp')
-    //     })
+    //         console.log(111,'ooo')
+    //         reslove(333)
+    //     },1000)
     //  });
-    //  oq.then((data)=>{
-    //     console.log('sss',data)
+    //  oqs.then((data)=>{
+    //     console.log(222,'sss',data)
     //     return 'sss'
     //  }).then((res)=>{
-    //      console.log(888,res)
+    //     console.log(888,res)
+    //     return '789'
+    //  }).then().then((res)=>{
+    //     console.log('yyyy',res)
+    //  })
+
+    // let oqs = new Mypromise((reslove)=>{
+    //     console.log(111,'ooo')
+    //     // setTimeout(()=>{
+    //         reslove(333)
+    //     // },1000)
+    //  });
+    //  oqs.then((data)=>{
+    //     console.log(222,'sss',data)
+    //     return 'mmm'
+    //  },(error)=>{
+    //     console.log(error,999)
+    //  }).then((res)=>{
+    //     console.log(888,res)
+    //     return new Mypromise((reslove)=>{
+    //         reslove('my promise!')
+    //     })
+    //  }).then().then((res)=>{
+    //     console.log('yyyy',res)
+    //     throw new Error('sss')
+    //  }).catch((ss)=>{
+    //  }).then(()=>{
+    //     console.log(777)
     //  })
