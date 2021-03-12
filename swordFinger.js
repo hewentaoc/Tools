@@ -261,7 +261,7 @@ function getKthFromEnd2(head, k) {
     return ans
 };
 
-//快慢指针
+//快慢指针 1->2->3->4->5->, 和 k = 2.
 function getKthFromEnd3(head, k){
     let fast = slow = head;
     let index = 0;

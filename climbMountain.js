@@ -104,3 +104,19 @@ const addTask = (time, order) => {
 
 
 
+/**
+ * 2.
+ * 两个36进制的数相加的结果
+ * 123 3f
+ * 456 9l
+ */
+
+ function getBinaryAdd(binary,num1,num2){
+    num1 = parseInt(num1,binary);//目标进制转化为十进制
+    num2 = parseInt(num2,binary);
+    let add = Number(num1) + Number(num2) + '';
+    add = add.toString(binary)
+    return add;
+ }
+
+//  console.log(getBinaryAdd(36,'3f','9l'))
