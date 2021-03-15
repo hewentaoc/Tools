@@ -127,7 +127,6 @@ Mypromise.prototype.then = function(onfulling,onreject){
                             var nextRejVal = onreject(self.rejectVal);
                             dealReturnVal(nextPromise,nextRejVal,res,rej);
                         } catch (error) {
-                            console.log('demo9')
                             rej(error);
                         }
                       
@@ -152,8 +151,8 @@ Mypromise.prototype.finally = function(func){
     this.then(function(data){
         func(data);
     },function(reason){
+        console.error(reason,'--')
         func();
-        throw reason;
     })
 }
 
@@ -196,21 +195,24 @@ Mypromise.prototype.finally = function(func){
         }
     }
 
-    // let oqs = new Mypromise((reslove)=>{
-    //     setTimeout(()=>{
-    //         console.log(111,'ooo')
-    //         reslove(333)
-    //     },1000)
-    //  });
-    //  oqs.then((data)=>{
-    //     console.log(222,'sss',data)
-    //     return 'sss'
-    //  }).then((res)=>{
-    //     console.log(888,res)
-    //     return '789'
-    //  }).then().then((res)=>{
-    //     console.log('yyyy',res)
-    //  })
+    let oqs = new Mypromise((reslove)=>{
+        setTimeout(()=>{
+            console.log(111,'ooo')
+            reslove(333)
+        },1000)
+     });
+     oqs.then((data)=>{
+        console.log(222,'sss',data)
+        return 'sss'
+     }).then((res)=>{
+        console.log(888,res)
+        return '789'
+     }).then().then((res)=>{
+        console.log('yyyy',res)
+        throw new Error('kkk')
+     }).finally(()=>{
+        console.log('find')
+     })
 
     // let oqs = new Mypromise((reslove)=>{
     //     console.log(111,'ooo')

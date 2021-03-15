@@ -72,9 +72,6 @@ function proxyObjFunc(key,obj,element){
 
 proxyMix(obj);
 
-function addNewKey(key,value){
-    
-}
 // console.log(proxyObj.name)
 
 
@@ -241,7 +238,6 @@ function getData(generator){
     try {
       func1(reslove,reject);
     } catch (error) {
-      console.log('iii')
       reject(error)
     }
  }
@@ -325,28 +321,248 @@ function getData(generator){
  MyPromise.prototype.catch = function(reject){
     return this.then(null,reject)
  }
- 
+
+ MyPromise.all = function(arr){
+    let len = arr.length;
+    let store = [];
+    return new MyPromise((res,rej)=>{
+         let record = after(len,res);   
+         for(let i = 0 ; i < arr.length ; i++){
+             if(arr[i] instanceof MyPromise){
+                arr[i].then((data)=>{
+                    store.push(data);
+                    record(store)
+                })
+             }else{
+                 rej('error')
+             }
+         }
+    })
+ }
+
+function after(len,res){
+     let index = 0;
+     return function(data){
+        index++;
+        if(index == len) {
+            res(data)
+        }
+     }
+}
+MyPromise.race = function(arr){
+    return new MyPromise((res,rej)=>{
+        for(let i = 0 ; i < arr.length ; i ++){
+            arr[i].then(res,rej)
+        }
+    })
+}
 //  setTimeout(()=>{
 //     console.log(999,'qqq')  
 //  })
- let oq = new MyPromise((reslove)=>{
-    reslove(333)
- });
- oq.then((data)=>{
-    console.log(222,'sss',data)
-    return 'mmm'
- },(error)=>{
-    console.log('error',error)
- }).then((res)=>{
-    console.log(888,res)
-    return new MyPromise((reslove)=>{
-        reslove('my promise!')
-    })
- }).then().then((res)=>{
-    console.log('yyyy',res)
- }).catch((err)=>{
-    console.log(666,err)
- }).then(()=>{
-    console.log('777')
- })
+//  let oq = new MyPromise((reslove)=>{
+//     reslove(333)
+//  });
+//  oq.then((data)=>{
+//     console.log(222,'sss',data)
+//     return 'mmm'
+//  },(error)=>{
+//     console.log('error',error)
+//  }).then((res)=>{
+//     console.log(888,res)
+//     return new MyPromise((reslove)=>{
+//         reslove('my promise!')
+//     })
+//  }).then().then((res)=>{
+//     console.log('yyyy',res)
+//  }).catch((err)=>{
+//     console.log(666,err)
+//  }).then(()=>{
+//     console.log('777')
+//  })
 
+//  let op_1 = new MyPromise((res,rej)=>{
+//      setTimeout(()=>{
+//         rej('op_1')
+//      },1000)
+//  })
+//  let op_2 = new MyPromise((res)=>{
+//     setTimeout(()=>{
+//        res('op_2')
+//     },2000)
+// })
+//  MyPromise.all([op_1,op_2]).then((data)=>{
+//     console.log(data,'9090')
+//  })
+//  MyPromise.race([op_1,op_2]).then((data)=>{
+//     console.log(data,'9090')
+//  },function(err){
+//     console.log(err,'68')
+//  })
+
+
+/**
+ * 6.Set
+ */
+class MySet {
+   constructor(iteratorObj){
+     if(typeof iteratorObj[Symbol.iterator] != 'function'){
+         throw new Error('iteratorObj不是一个迭代对象')
+     }
+     this.stores = [];
+     for (const iterator of iteratorObj) {
+        this.add(iterator)
+     }
+   }
+   add(data){
+      if(!this.has(data)){
+        this.stores.push(data);
+      }
+   }
+   delete(data){
+    　for(let i = 0 ; i < this.stores.length;i++){
+            if(this.isEqual(data,this.stores[i])){
+                this.stores.splice(i,1);
+                return true;
+            }
+      }
+      return false;
+   }
+   has(data){
+     for (const item of this.stores) {
+         if(this.isEqual(data,item)){
+             return true;
+         }
+     }
+     return false;
+   }
+   clean(){
+       this.stores.length = 0;
+   }
+   forEach(callback) {
+    for (const item of this._datas) {
+        callback(item, item, this);
+    }
+   }
+   isEqual(data,item){
+     return Object.is(data,item)
+   }
+   *[Symbol.iterator](){
+       for (const iterator of this.stores) {
+           yield iterator;
+       }
+   }
+   size() {
+    return this._datas.length;
+   } 
+}
+
+// let demo6 = new MySet([1,2,3,4])
+// // console.log(demo6)
+// console.log([...demo6])
+class MyMap {
+    constructor(iterable = []) {
+        //验证是否是可迭代的对象
+        if (typeof iterable[Symbol.iterator] !== "function") {
+            throw new TypeError(`你提供的${iterable}不是一个可迭代的对象`)
+        }
+        this._datas = [];
+        for (const item of iterable) {
+            // item 也得是一个可迭代对象
+            if (typeof item[Symbol.iterator] !== "function") {
+                throw new TypeError(`你提供的${item}不是一个可迭代的对象`);
+            }
+            const iterator = item[Symbol.iterator]();
+            const key = iterator.next().value;
+            const value = iterator.next().value;
+            console.log(key,value,iterator.next(),iterator.next())
+            this.set(key, value);
+        }
+
+    }
+
+    set(key, value) {
+        const obj = this._getObj(key);
+        if (obj) {
+            //修改
+            obj.value = value;
+        }
+        else {
+            this._datas.push({
+                key,
+                value
+            })
+        }
+    }
+
+    get(key) {
+        const item = this._getObj(key);
+        if (item) {
+            return item.value;
+        }
+        return undefined;
+    }
+
+    get size() {
+        return this._datas.length;
+    }
+
+    delete(key) {
+        for (let i = 0; i < this._datas.length; i++) {
+            const element = this._datas[i];
+            if (this.isEqual(element.key, key)) {
+                this._datas.splice(i, 1);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    clear() {
+        this._datas.length = 0;
+    }
+
+    /**
+     * 根据key值从内部数组中，找到对应的数组项
+     * @param {*} key 
+     */
+    _getObj(key) {
+        for (const item of this._datas) {
+            if (this.isEqual(item.key, key)) {
+                return item;
+            }
+        }
+    }
+
+    has(key) {
+        return this._getObj(key) !== undefined;
+    }
+
+    /**
+     * 判断两个数据是否相等
+     * @param {*} data1 
+     * @param {*} data2 
+     */
+    isEqual(data1, data2) {
+        if (data1 === 0 && data2 === 0) {
+            return true;
+        }
+        return Object.is(data1, data2);
+    }
+
+    *[Symbol.iterator]() {
+        for (const item of this._datas) {
+            yield [item.key, item.value];
+        }
+    }
+
+    forEach(callback) {
+        for (const item of this._datas) {
+            callback(item.value, item.key, this);
+        }
+    }
+}
+// const mp1 = new MyMap([
+//     ["a", 3],
+//     ["b", 4],
+//     ["c", 5]
+// ]);

@@ -667,4 +667,16 @@ function deepClone(object,target){
     return arr18;    
  }
 
+/**
+ * 19.求两个数组的交集和并集
+ */
 
+ var arr19_1 = [1,2,3,4];
+ var arr19_2 = [2,3,4,5];
+
+ var arr19_j = arr19_1.filter((item)=>{
+    return arr19_2.includes(item);
+ })
+// console.log(arr19_j)
+var arr19_b = [...new Set(arr19_1.concat(arr19_2))]
+// console.log(arr19_b)
