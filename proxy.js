@@ -33,7 +33,7 @@
             /* 
              用于处理对象的嵌套问题 */
             if(obj[prop] instanceof Object ){
-                proxyObj[prop] = constructorData(vm ,obj[prop] , '');
+                proxyObj[prop] = constructorData(vm ,obj[prop] );
             }
         }
         return proxyObj;
@@ -92,11 +92,11 @@
         }
         /* 
          该处的this指向可以填this
-         对后面的this没影响 */
-        proxyArray.call(vm, vm ,obj,'push',namespace);
-        proxyArray.call(vm, vm ,obj,'pop',namespace);
-        proxyArray.call(vm, vm ,obj,'shift',namespace);
-        proxyArray.call(vm, vm ,obj,'shift',namespace);
+        //  对后面的this没影响 */
+        // proxyArray.call(vm, vm ,obj,'push',namespace);
+        // proxyArray.call(vm, vm ,obj,'pop',namespace);
+        // proxyArray.call(vm, vm ,obj,'shift',namespace);
+        // proxyArray.call(vm, vm ,obj,'shift',namespace);
         arr.__proto__ = obj;
         return arr;
     }
@@ -108,9 +108,9 @@
         if(obj instanceof Array){ /*  判断数据是否为数组 */
             proxyObj = new Array(obj.length);
             for(var i = 0 ; i < obj.length; i++){
-                proxyObj[i] =  constructorObject(vm , obj[i] , namespace);
+                // proxyObj[i] =  constructorObject(vm , obj[i] , namespace);
             }
-            proxyObj = constructorArray(vm , obj , namespace);
+            // proxyObj = constructorArray(vm , obj , namespace);
         }else if(obj instanceof Object){   /* 判断数据是否为对象 */
 
             proxyObj = constructorObject(vm , obj , namespace);
@@ -124,7 +124,6 @@
     let obj = {
         name:'hwt',
         age:13,
-        test:[1],
         love:{
             sing:'song'
         }

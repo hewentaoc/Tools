@@ -36,7 +36,7 @@ function proxyObject(vm,obj){
     for (const key in obj) {
         Object.defineProperty(proxyObj,key,{
             set(value){
-                console.log('set')
+                console.log('set',value)
                 obj[key] = value;
             },
             get(){
@@ -45,7 +45,7 @@ function proxyObject(vm,obj){
             }
         })
         if(typeof obj[key] == 'object'){
-            obj[key] = myProxy(vm,obj[key]);
+            proxyObj[key] = myProxy(vm,obj[key]);
         }
     }
     return proxyObj;
