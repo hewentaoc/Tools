@@ -1028,6 +1028,7 @@ function midTreeShow2(root){
     while(node || save.length > 0){
         if(node){
             console.log(11,node)
+            save.push(node)
             node = node.left;
         }else{
           let cur = save.pop();

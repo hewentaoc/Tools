@@ -155,6 +155,10 @@ str3_3_result = str3_3.replace(/(\w)\1+/g,function($,$1,$2){
  * 给Arr和target，在Arr里找两个数字相加等于target
  * 给定一个无重复数字的数组，求其全排列
  * 一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法（先后次序不同算不同的结果）
+ * 100~999的所有"水仙花"数, 就是三位数中各数字的立方和等于自身,比如153=1^3+5^3+3^3
+ * 利用数学计数法没3位打个点 var str="100000000000";str="100.000.000.000"
+ * 10,000,000
+
 * @param {any} obj 注意输入可能是任何类型
 * @returns {Object}
 * @example
@@ -174,3 +178,33 @@ str3_3_result = str3_3.replace(/(\w)\1+/g,function($,$1,$2){
 *   },
 * };
  */
+
+ /**
+  * 4.1 数组里面找重复数字。[1,2,3,2,1,1,1,1]，输出[1,2]
+  */
+
+
+var arr4_1 = [1,2,3,2,1,1,1,1];
+function getOrderRepeatArr(arr) {
+    let map = new Map();
+    for(let i = 0 ; i < arr.length ;i ++){
+        if(map.has(arr[i])){
+            let value = map.get(arr[i]);
+            map.set(arr[i],value + 1);
+        }else{
+           map.set(arr[i],1);
+        }
+    }
+    let result = [];
+    for (const iterator of map) {
+        if(iterator[1] > 1){
+            result.push(iterator[0]);
+        }
+    }
+    return result;
+}
+//  let result4_1 = getOrderRepeatArr(arr4_1);
+//  console.log(result4_1)
+
+
+
