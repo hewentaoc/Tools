@@ -37,11 +37,13 @@ class Dep{
     constructor(){
         this.store = new Set()
     }
+    //订阅
     depend(){
         if(activeUpdate){
             this.store.add(activeUpdate)
         }
     }
+    //发布
     notify(){
         this.store.forEach((func)=>{
             func();

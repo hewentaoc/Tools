@@ -5,72 +5,66 @@
 let obj = {
     name:'hwt',
     age:13,
-    test:[1],
+    test:[1,2,3],
     love:{
         sing:'song'
     }
 }
 
-let proxyObj = {}
 function proxyMix(obj){
+    let proxyObj = {}
+    if(obj instanceof Array){
+       proxyObj = [];
+       for(let i = 0 ; i < obj.length ; i++){
+           proxyObj[i] = proxyObjFunc(obj[i]);
+       }
+       proxyObj = proxyArrFunc(obj)
+    }else if(typeof obj == 'object'){
+        proxyObj = proxyObjFunc(obj);
+    }
+    return proxyObj;
+}
+function proxyObjFunc(obj){
+    let proxyObj = {}
     for (const key in obj) {
-        if (Object.hasOwnProperty.call(obj, key)) {
-            const element = obj[key];
-            if(element instanceof Array){
-                Object.defineProperty(proxyObj,key,{
-                    set(val){
-                        console.log('set')
-                        obj[key] = val;
-                    },
-                    get(){
-                        console.log('get');
-                        return obj[key];
-                    }
-                })
-                let prototypeObj = {
-                    push:function(){},
-                    pop(){},
-                    shift(){},
-                    unshift(){}
-                }
-                element.__proto__ = prototypeObj;
-                proxyArrFunc(prototypeObj,'push');
-                proxyArrFunc(prototypeObj,'pop');
-            }else{
-                proxyObjFunc(key,obj,element);
+        Object.defineProperty(proxyObj,key,{
+            set(val){
+                console.log('set')
+                obj[key] = val;
+            },
+            get(){
+                console.log('get');
+                return obj[key];
             }
+        })
+        if(typeof obj[key] == 'object'){
+            proxyObj[key] = proxyMix(obj[key]);
         }
     }
+    return proxyObj;
 }
 let protoArr = Array.prototype;
-function proxyArrFunc(prototypeObj,prop){
-    Object.defineProperty(prototypeObj,prop,{
+function proxyArrFunc(arr){
+    let prototypeObj = {
+        push:function(){},
+        pop(){},
+        shift(){},
+        unshift(){}
+    }
+    Object.defineProperty(prototypeObj,'push',{
         value:(function(){
             return function(...arg){
-                console.log(prop,'数组监控')
-                protoArr[prop].apply(this,arg);
+                console.log('push','数组监控')
+                protoArr['push'].apply(this,arg);
                 return this.length;
             }
         }())
     })
-}
-function proxyObjFunc(key,obj,element){
-    Object.defineProperty(proxyObj,key,{
-        set(val){
-            console.log('set')
-            obj[key] = val;
-        },
-        get(){
-            console.log('get');
-            return obj[key];
-        }
-    })
-    if(typeof element == 'object'){
-       proxyMix(element);
-    }
+    arr.__proto__ = prototypeObj;
+    return arr;
 }
 
-// proxyMix(obj);
+let proxyObj = proxyMix(obj);
 
 // console.log(proxyObj.name)
 
