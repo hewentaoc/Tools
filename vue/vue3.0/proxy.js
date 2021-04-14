@@ -59,7 +59,7 @@ function observer(obj){
     let result = new Proxy(obj,{
         set(target,key,value){
             console.log('set',key)
-            observer(value)
+            observer(value)//是否需要返回值给value
             Reflect.set(target,key,value);
             trigger(target,key)
         },
@@ -121,15 +121,15 @@ function trigger(target,key){
         func();
     })
 }
-effect(()=>{
-    console.log(111,res.name,res.age)
-})
-effect(()=>{
-    console.log(222,res.name)
-})
-effect(()=>{
-    console.log(333,res.age)
-})
-effect(()=>{
-    console.log(444,res.loves)
-})
+// effect(()=>{
+//     console.log(111,res.name,res.age)
+// })
+// effect(()=>{
+//     console.log(222,res.name)
+// })
+// effect(()=>{
+//     console.log(333,res.age)
+// })
+// effect(()=>{
+//     console.log(444,res.loves)
+// })

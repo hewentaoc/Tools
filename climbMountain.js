@@ -149,6 +149,28 @@ str3_3_result = str3_3.replace(/(\w)\1+/g,function($,$1,$2){
     return $1;
 })
 // console.log(str3_3_result)
+var matchPXExp = /(\-?[0-9.]+px)([\s]*\/\*keep\*\/|[;,| |}|'|")\r|\n])/g;
+var css = `
+  div {
+      font-size:18px;
+      color:red;
+      height:4px/*keep*/;
+      width:100px;
+    }
+`
+console.log(css.match(matchPXExp))
+css.replace(matchPXExp,function($,$1,$2){
+    console.log(666,$,$1,$2)
+})
+
+
+
+
+
+
+
+
+
 
 /**
  * 4.数组里面找重复数字。[1,2,3,2,1,1,1,1]，输出[1,2]
