@@ -57,17 +57,17 @@ function observer(obj){
     }
     
     let result = new Proxy(obj,{
-        set(target,key,value){
-            console.log('set',key)
-            observer(value)//是否需要返回值给value
-            Reflect.set(target,key,value);
-            trigger(target,key)
-        },
         get(target,key){
-          console.log('get',key)
+        //   console.log('get',key)
           track(target,key)
           let value = observer(Reflect.get(target,key));
           return value;
+        },
+        set(target,key,value){
+            // console.log('set',key)
+            value = observer(value)//是否需要返回值给value
+            Reflect.set(target,key,value);
+            trigger(target,key)
         }
     })
     return result;
@@ -92,6 +92,14 @@ function effect(func){
 }
 
 let depsMap = new Map();
+//obj,name
+//map
+//obj,Map([name])
+//obj,Map([name,Set(func,func))
+/*
+depsMap[obj,Map[[key1,Set()],[key2,Set()]]]
+
+*/
 function track(target,key){
     if(activeUpdate){
         let targetDeps= depsMap.get(target);

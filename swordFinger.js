@@ -219,7 +219,7 @@ function findLargestSum2(arr) {
     },arr[0])
     return max;
 }
-// let res = findLargestSum2([-2,1,-3,4,-1,2,1,-5,4]);
+// let res = findLargestSum2([1,4]);
 
 
 
@@ -346,24 +346,23 @@ function arrangeHelper(arr,str){
     }
 }   
 
-// var permutation = function(s) {
-//     const res = new Set()
-//     const visit = {}
-//     function dfs(path) {
-//         console.log(path)
-//         if(path.length === s.length) return res.add(path)
-//         for (let i = 0; i < s.length; i++) {
-//             if (visit[i]) continue
-//             visit[i] = true
-//             dfs(path + s[i])
-//             visit[i] = false
-//         }
-//     }
-//     dfs('')
-//     console.log(res)
-//     return [...res]
-// };
-// permutation("abc")
+var permutation = function(s) {
+    const res = new Set()
+    const visit = {}
+    function dfs(path) {
+        if(path.length === s.length) return res.add(path)
+        for (let i = 0; i < s.length; i++) {
+            if (visit[i]) continue
+            visit[i] = true
+            dfs(path + s[i])
+            visit[i] = false
+        }
+    }
+    dfs('')
+    console.log(res)
+    return [...res]
+};
+permutation("abc")
 
 
 /**

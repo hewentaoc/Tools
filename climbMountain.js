@@ -4,45 +4,48 @@
 
  */
 //方法一
-// class Scheduler {
-//   constructor(){
-//       this.promissStore = [];
-//       this.count = 0;
-//   }
-//   run(){
-//     let promissStore  = this.promissStore;
-//     let count = this.count;
-//     if(promissStore.length && count < 2){
-//         this.count++;
-//         let [resolve,promiseCreator] =  promissStore.shift();
-//         Promise.resolve(promiseCreator()).then(()=>{
-//             resolve();
-//             this.count --;
-//             this.run();
-//         })
-//     }
-//   }
-//   add(promiseCreator) {
-//     return new Promise((reslove,resject)=>{
-//         this.promissStore.push([reslove,promiseCreator]);
-//         this.run(); 
-//     })
-//   }
-// }
-//   const timeout = (time) => new Promise(resolve => {
-//     setTimeout(resolve, time)
-//   })
-//   const scheduler = new Scheduler();
-//   const addTask = (time, order) => {
-//   scheduler.add(() => timeout(time))
-//    .then(() => console.log(time, 'time, order', order))
-//   }
+class Scheduler {
+  constructor(){
+      this.promissStore = [];
+      this.count = 0;
+  }
+  run(){
+    let promissStore  = this.promissStore;
+    let count = this.count;
+    if(promissStore.length && count < 2){
+        this.count++;
+        let [resolve,promiseCreator] =  promissStore.shift();
+        Promise.resolve(promiseCreator()).then(()=>{
+            resolve();
+            this.count --;
+            this.run();
+        })
+    }
+  }
+  add(promiseCreator) {
+    return new Promise((reslove,resject)=>{
+        this.promissStore.push([reslove,promiseCreator]);
+        this.run(); 
+    })
+  }
+}
+  const timeout = (time) => new Promise(resolve => {
+    setTimeout(resolve, time)
+  })
+  const scheduler = new Scheduler();
+  const addTask = (time, order) => {
+  scheduler.add(() => timeout(time))
+   .then(() => console.log(time, 'time, order', order))
+  }
 
 // addTask(1000, '1')
 // addTask(500,  '2')
 // addTask(300,  '3')
 // addTask(400,  '4')
-// 一开始，1、2两个任务进入队列// 500ms时，2完成，输出2，任务3进队// 800ms时，3完成，输出3，任务4进队// 1000ms时，1完成，输出1// 1200ms时，4完成，输出4
+// 一开始，1、2两个任务进入队列
+// 500ms时，2完成，输出2，任务3进队
+// 800ms时，3完成，输出3，任务4进队
+// 1000ms时，1完成，输出1// 1200ms时，4完成，输出4
 
 //方法二
 class Scheduler {

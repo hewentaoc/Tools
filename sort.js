@@ -127,3 +127,4 @@ let osort = new mySort(arr);
         findIndex(arrs, 5)
         // console.log(findIndex(arrs, 5))
 
+    

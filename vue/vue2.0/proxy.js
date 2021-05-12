@@ -61,13 +61,13 @@ function observer(obj) {
         observer(obj[item])//递归监听属性
         Object.defineProperty(obj,item,{
             get(){
-                console.log('get '+ item + ':',value)
+                // console.log('get '+ item + ':',value)
                 dep.depend();
                 return value;
             },
             set(val){
                 observer(val);//对赋值为对象的值进行重新监听
-                console.log('set '+ item + ':',value)
+                // console.log('set '+ item + ':',value)
                 value = val;
                 dep.notify();//通知所有用到我的属性全部重新运行
             }
@@ -87,7 +87,7 @@ function autoRun(func){
 }
 
 autoRun(()=>{
-    console.log(111,obj.name)
+    console.log(111,obj.name,obj.loves)
 })
 autoRun(()=>{
     console.log(222,obj.loves)

@@ -237,3 +237,38 @@ Mypromise.prototype.finally = function(func){
     //  }).then(()=>{
     //     console.log(777)
     //  })
+    
+    //  MyPromise.all([op_1,op_2]).then((data)=>{
+    //     console.log(data,'9090')
+    //  })
+    //  MyPromise.race([op_1,op_2]).then((data)=>{
+    //     console.log(data,'9090')
+    //  },function(err){
+    //     console.log(err,'68')
+    //  })
+
+    Promise.myAll = function(arg){
+        if(! arg instanceof Array){
+            return false;
+        }
+        let len = arg.length;
+        let result = [];
+        return new Promise((res,rej)=>{
+            arg.forEach((item)=>{
+                item.then((data)=>{
+                  result.push(data);
+                  if(--len == 0){
+                    res(result);
+                  }
+                },(error)=>{
+                    rej(error);
+                })
+            })  
+        })
+    }
+    Promise.myAll([op_1,op_2]).then((data)=>{
+
+    })
+    
+
+    
